@@ -7,16 +7,25 @@ on:
       pr_number:
         description: 'PR Number'
         required: true
+      branch_ref:
+        description: 'Branch Name'
+        required: true
+      sha:
+        description: 'Commit SHA'
+        required: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.sha }}
       
       - name: Run your task
         run: |
           echo "Running task for PR #${{ inputs.pr_number }}"
+          echo "Branch: ${{ inputs.branch_ref }}"
+          echo "SHA: ${{ inputs.sha }}"
+          git rev-parse HEAD
           cat README.md
-          echo "Finished running task for PR #${{ inputs.pr_number }}"
-          echo "Round 2"
