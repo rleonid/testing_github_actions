@@ -27,7 +27,7 @@ jobs:
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: 'main-task.yml',
+              workflow_id: 'task.yml',
               ref: 'main',
               inputs: {
                 pr_number: context.issue.number.toString()
