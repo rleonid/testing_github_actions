@@ -12,10 +12,24 @@ jobs:
     if: ${{ github.event.issue.pull_request && github.event.comment.body == 'run-task' }}
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo A comment on PR $NUMBER
-          echo "Branch: ${{ github.head_ref }}"
-          echo "PR Title: ${{ github.event.issue.title }}"
-          echo "PR Data: ${{ toJSON(github.event.pull_request) }}"
-        env:
-          NUMBER: ${{ github.event.issue.number }}
+      # - run: |
+      #     echo A comment on PR $NUMBER
+      #     echo "Branch: ${{ github.head_ref }}"
+      #     echo "PR Title: ${{ github.event.issue.title }}"
+      #     echo "PR Data: ${{ toJSON(github.event.pull_request) }}"
+      #   env:
+      #     NUMBER: ${{ github.event.issue.number }}
+
+      - name: Trigger build workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'main-task.yml',
+              ref: 'main',
+              inputs: {
+                pr_number: context.issue.number.toString()
+              }
+            })

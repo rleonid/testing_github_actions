@@ -1,0 +1,20 @@
+# .github/workflows/task.yml
+name: Main Task
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR Number'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run your task
+        run: |
+          echo "Running task for PR #${{ inputs.pr_number }}"
+          cat README.md
